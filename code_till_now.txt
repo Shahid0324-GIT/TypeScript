@@ -1,0 +1,21 @@
+typescript commands:
+    tsc -w will compile all the ts files in the directory unless mentioned to skip other directories otherwise.
+
+let myName: string;
+let num: number;
+let isLoading: boolean;
+let album: any;
+
+myName = "John Doe";
+num = 42;
+isLoading = false;
+album = 1984;
+
+const sum = (a: number, b: number) => {
+  return a + b;
+};
+
+let postId: number | string;
+let isActive: number | boolean;
+
+let re = /\w+/g;
