@@ -185,3 +185,94 @@ const greetEmployee = (employee: Employee) => {
 
 console.log(greetEmployee(employee1));
 ```
+
+# Type Aliases and Functions:
+
+- It is used to assign a type to variable which can be used anywhere in the code and which makes the code more modular.
+
+```typescript
+type stringOrNumber = string | number;
+
+type stringOrNumberArr = (string | number)[];
+
+type Employee = {
+  id: stringOrNumber;
+  name: string;
+  age?: number;
+  isCEO: boolean;
+  hobbies: stringOrNumberArr;
+};
+
+type UserId = stringOrNumber;
+```
+
+- Literal Types: Is used to define a constant value which cannot be changed => `const name = 'Constant';`
+
+```typescript
+let myName: "John Doe";
+let userName: "John Doe" | "Jane Doe" | "Sam Doe";
+```
+
+- **Void functions**: A function without a "return statement"
+
+```typescript
+// A normal function
+
+// type mathFunction = (a: number, b: number) => number;
+interface mathFunction {
+  (a: number, b: number): number;
+}
+
+const add: mathFunction = (a, b) => {
+  return a + b;
+};
+
+let sub: mathFunction = function (a, b) {
+  return Math.abs(a - b);
+};
+
+function multiply(a: number, b: number): number {
+  return Math.abs(a * b);
+}
+
+const divide: mathFunction = (a, b) => {
+  return Math.ceil(a / b);
+};
+
+// Void Function
+
+const v = (message: any): void => {
+  console.log(message);
+};
+
+console.log(add(24, 18));
+console.log(sub(24, -18));
+console.log(multiply(-24, 18));
+console.log(divide(24, 18));
+console.log(sub(-24, 18));
+
+v("Hello World!");
+v(123);
+v(true);
+v({
+  name: "Jane Doe",
+});
+```
+
+- **Never Type**: Functions which throw error are of "never" type or have a infinit loop
+
+```typescript
+// Error function
+const createError = (msg: string) => {
+  throw new Error(msg);
+};
+
+// Infinite loop
+
+const infinite = () => {
+  let i = 0;
+  while (true) {
+    i++;
+  }
+};
+```
