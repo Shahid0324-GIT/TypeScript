@@ -1,8 +1,8 @@
 # TypeScript Inference
 
-> TypeScript excels at automatic type inference, allowing it to determine the data type of a variable upon assignment.
+TypeScript excels at automatic type inference, allowing it to determine the data type of a variable upon assignment.
 
-Example:
+**Example:**
 
 ```typescript
 let myName = "John Doe"; // TypeScript infers: let myName: string
@@ -121,7 +121,7 @@ let person2: Person = {
   albums: ["Gala", 1984, "Enigma", 2011],
 };
 
-// Adding new property to the objects person1 and person2 is not possible
+// Adding a new property to the objects person1 and person2 is not possible
 
 // person1.gender = "Male"; this is not possible since we did not create a property named "gender" in the type Person object
 
@@ -158,7 +158,7 @@ console.log(greetPerson(person1));
 
 - `interface` is kinda similar to creating a `class`
 
-- The syntax for interface is as follows.
+- The syntax for the interface is as follows.
 
 ```typescript
 interface Employee {
@@ -188,7 +188,7 @@ console.log(greetEmployee(employee1));
 
 # Type Aliases and Functions:
 
-- It is used to assign a type to variable which can be used anywhere in the code and which makes the code more modular.
+- It is used to assign a type to a variable which can be used anywhere in the code and which makes the code more modular.
 
 ```typescript
 type stringOrNumber = string | number;
@@ -206,7 +206,7 @@ type Employee = {
 type UserId = stringOrNumber;
 ```
 
-- Literal Types: Is used to define a constant value which cannot be changed => `const name = 'Constant';`
+- Literal Types: Is used to define a constant value that cannot be changed => `const name = 'Constant';`
 
 ```typescript
 let myName: "John Doe";
@@ -259,7 +259,7 @@ v({
 });
 ```
 
-- **Never Type**: Functions which throw error are of "never" type or have a infinit loop
+- **Never Type**: Functions that throw an error are of "never" type or have an infinite loop
 
 ```typescript
 // Error function
