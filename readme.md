@@ -2,7 +2,7 @@
 
 - TypeScript can infer the data-type means it knows the data-type of a variable when assigned.
 
-  - Ex: `let myName = "John Doe";` when hovering on thevariable name you can see that the type of the variable is a string and is represented as `let myName: string`
+  - Ex: `let myName = "John Doe";` when hovering on the variable name you can see that the type of the variable is a string and is represented as `let myName: string`
 
 ---
 
