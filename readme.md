@@ -95,3 +95,93 @@ Tuples have a fixed length and enforce the specified order. Reassignment from an
 myArr = myTuple; // Reassignment is possible
 // myTuple = myArr; // This is not possible
 ```
+
+# Objects in TypeScript:
+
+Since Arrays, Objects, Map are all considered as objects in JavaScript, to assign an Object which holds the key: value pairs in TypeScript the syntax is a little different.
+
+```typescript
+type Person = {
+  name: string;
+  age?: number; // Providing "?" can make the property optional
+  employed: boolean;
+  albums: (string | number)[];
+};
+
+let person1: Person = {
+  name: "John Doe",
+  age: 32,
+  employed: true,
+  albums: ["Gala", 1984, "Enigma", 2011],
+};
+
+let person2: Person = {
+  name: "Jane Doe",
+  employed: true,
+  albums: ["Gala", 1984, "Enigma", 2011],
+};
+
+// Adding new property to the objects person1 and person2 is not possible
+
+// person1.gender = "Male"; this is not possible since we did not create a property named "gender" in the type Person object
+
+// Re-assignment is possible between two objects created from the same type
+```
+
+- Passing the objects in the function. The syntax is
+
+```typescript
+type Person = {
+  name: string;
+  age?: number; // Providing "?" can make the property optional
+  employed: boolean;
+  albums: (string | number)[];
+};
+
+let person1: Person = {
+  name: "John Doe",
+  age: 32,
+  employed: true,
+  albums: ["Gala", 1984, "Enigma", 2011],
+};
+
+const greetPerson = (person: Person) => {
+  return `Hello ${person.name}`;
+};
+
+console.log(greetPerson(person1));
+```
+
+# Interface declaration:
+
+- To create a new object it can be done using `type` and `interface`.
+
+- `interface` is kinda similar to creating a `class`
+
+- The syntax for interface is as follows.
+
+```typescript
+interface Employee {
+  name: string;
+  id: string | number;
+  salary: number;
+  designation: string;
+  role: string;
+  hobbies?: string[];
+  achievements?: (string | number)[];
+}
+
+let employee1: Employee = {
+  name: "John Doe",
+  id: 1,
+  salary: 1200000,
+  designation: "Software Engineer",
+  role: "Frontend Developer",
+};
+
+const greetEmployee = (employee: Employee) => {
+  return `Hello ${employee.name}`;
+};
+
+console.log(greetEmployee(employee1));
+```
