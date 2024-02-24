@@ -1,74 +1,97 @@
-# TypeScript Inference:
+# TypeScript Inference
 
-- TypeScript can infer the data-type means it knows the data-type of a variable when assigned.
+> TypeScript excels at automatic type inference, allowing it to determine the data type of a variable upon assignment.
 
-  - Ex: `let myName = "John Doe";` when hovering on the variable name you can see that the type of the variable is a string and is represented as `let myName: string`
+Example:
 
----
-
-# Explicit Typing:
-
-- To explicilty type a variable then the syntax is as follows:
-
-- `let myName: string = 'John Doe'`
-- `let myNumber: number = 42`
-- `let con: boolean = false`
-- `let re: RegExp = /\w+/g` ( _Selects all the words_ )
-
-- `let stringArray = ["Hey", "Hi", "Hello"];` => `let stringArray: string[]`
-- `let numstrArray = ["Amigo", "Friend", 1];` => `let numstrArray: (string | number)[]`
-- `let mixedData = ["EVH", 1984, true];` => `let mixedData: (string | number | boolean)[]`
-
-- `let arr = [1,2,'doe', false, {name: "Jane", age: 42}]` => `let arr: (number | string | boolean, {name: string, age: number})[]` _...etc._
-
-- `|` -> Indicates a union operator which means that particular variable can hold multiple types
-
-  - Ex: `let album: string | number`
-
-**_Once the data-type is assigned the value of that variable will only hold that data-type and it cannot be re-assigned to a different data-type._**
+```typescript
+let myName = "John Doe"; // TypeScript infers: let myName: string
+```
 
 ---
 
-# Functions in TypeScript:
+# Explicit Typing
 
-- ### Arrow Function:
+When you want to explicitly define the type of a variable, TypeScript provides clear syntax:
 
-- ```
-    const sum = (a: number, b: number) => {
-        return a + b
-    }
-  ```
+```typescript
+let myName: string = "John Doe";
+let myNumber: number = 42;
+let con: boolean = false;
+let re: RegExp = /\w+/g; // Selects all the words
 
-  - Since both of the args are numbers the return type of the function will also be a number and it is representd as follows in TypeScript:
+let strArr: string[] = [];
+let arr = []; // Any data type
 
-    ```
-    const sum: (a: number, b: number) => number
-    ```
+let stringArray = ["Hey", "Hi", "Hello"]; // TypeScript infers: let stringArray: string[]
+let numstrArray = ["Amigo", "Friend", 1]; // TypeScript infers: let numstrArray: (string | number)[]
+let mixedData = ["EVH", 1984, true]; // TypeScript infers: let mixedData: (string | number | boolean)[]
+let arr = [1, 2, "doe", false, { name: "Jane", age: 42 }]; // TypeScript infers: let arr: (number | string | boolean, {name: string, age: number})[]
+```
 
-- ### Function Declaration:
+The `|` operator indicates a union, allowing a variable to hold multiple data types.
 
-- ```
-    function sum(a: number, b: number) {
-        return a + b;
-    }
-  ```
+**Once a data type is assigned, the variable can only hold values of that type and cannot be reassigned to a different type.**
 
-  - Since both of the args are numbers the return type of the function will also be a number and it is representd as follows in TypeScript:
+---
 
-    ```
-    function sum(a: number, b: number): number
-    ```
+# Functions in TypeScript
 
-- ### Function Expression:
+## Arrow Function
 
-- ```
-    const sum = function (a: number,    b: number) {
-        return a + b;
-    };
-  ```
+```typescript
+const sum = (a: number, b: number): number => {
+  return a + b;
+};
+```
 
-  - Since both of the args are numbers the return type of the function will also be a number and it is representd as follows in TypeScript:
+## Function Declaration
 
-    ```
-    const sum: (a: number, b: number) => number
-    ```
+```typescript
+function sum(a: number, b: number): number {
+  return a + b;
+}
+```
+
+## Function Expression
+
+```typescript
+const sum = function (a: number, b: number): number {
+  return a + b;
+};
+```
+
+# Union Types in TypeScript
+
+TypeScript supports assigning multiple data types to a variable using the `|` operator.
+
+```typescript
+let a: string | number;
+let b: string | boolean;
+let arrWithStrings = ["hey", "hi", "hello"];
+let arrWithNumsAndStrings = ["hey", "hi", "hello", 1, 2, 3];
+let mixedDataTypes = ["hey", "hi", "hello", 1, 2, 3, true, false];
+```
+
+Reassignment is possible, given the compatible types.
+
+```typescript
+mixedDataTypes = arrWithNumsAndStrings;
+arrWithNumsAndStrings = arrWithStrings;
+```
+
+# Tuple in TypeScript
+
+A tuple in TypeScript is similar to an array but maintains a strict order specified during initialization.
+
+```typescript
+let myTuple: [string, number, boolean] = ["John Doe", 42, true];
+let myArr = ["Jane Doe", 24, false];
+```
+
+Tuples have a fixed length and enforce the specified order. Reassignment from an array to a tuple is possible, but the reverse is not.
+
+```typescript
+myArr = myTuple; // Reassignment is possible
+// myTuple = myArr; // This is not possible
+```
