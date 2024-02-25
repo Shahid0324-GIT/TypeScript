@@ -349,3 +349,394 @@ const img2 = document.querySelector("img")!;
 
 const img3 = <HTMLImageElement>document.querySelector("img"); // Other way to write assertion
 ```
+
+# Classes in TypeScript:
+
+- Inside the class the properties and methods are called as members.
+
+- The members of a class (properties & methods) are typed using type annotations, similar to variables.
+
+- Syntax for writing the class without Visibility/ Data/ Access modifiers
+
+```typescript
+class Person {
+  name: string;
+}
+
+const person = new Person();
+person.name = "Jane";
+
+class Coder {
+  name: string;
+  music: string;
+  age: number;
+  lang: string;
+
+  constructor(name: string, music: string, age: number, lang: string) {
+    this.name = name;
+    this.music = music;
+    this.age = age;
+    this.lang = lang;
+  }
+}
+
+const coder1 = new Coder("John Doe", "Anime Openings / Endings", 28, [
+  "JavaScript",
+  "Python",
+  "Java",
+  "Go",
+]);
+
+console.log(coder1);
+```
+
+- Syntax for writing class with Visibility/ Data/ Access modifiers.
+
+- There are three main visibility modifiers in TypeScript.
+
+  - **public** - (default) allows access to the class member from anywhere
+  - **private** - only allows access to the class member from within the class
+  - **protected** - allows access to the class member from itself and any classes that inherit it, which is covered in the inheritance section below
+  - **readonly** - variable with _readonly_ cannot be changed after initial definition, which has to be either at it's declaration or in the constructor.
+
+```typescript
+class Coder {
+  // Writing a property which is not used in the class instantiation
+
+  job!: string;
+
+  constructor(
+    public readonly name: string,
+    public music: string,
+    private age: number,
+    protected lang: string[] = ["JavaScript", "TypeScript"]
+  ) {
+    this.name = name;
+    this.music = music;
+    this.age = age;
+    this.lang = lang;
+  }
+
+  public getDetails() {
+    return `Hello! My name is ${this.name} and I'm ${
+      this.age
+    } years old. I like ${
+      this.music
+    } music and I am profecient in ${this.lang.reduce((curr, acc) => {
+      return `${curr}, ${acc}`;
+    })}`;
+  }
+}
+
+const coder1 = new Coder("John Doe", "Anime Openings / Endings", 28);
+console.log(coder1.getDetails());
+```
+
+# Inheritance: Implements in class:
+
+- Interfaces can be used to define the type a class must follow through the implements keyword.
+
+```typescript
+interface Musician {
+  name: string;
+  instrument: string;
+  play(action: string): string; // It is a function or a method which takes a single parameter action which is a string and return a string
+}
+
+class Guitarist implements Musician {
+  name: string;
+  instrument: string;
+
+  constructor(name: string, instrument: string) {
+    this.name = name;
+    this.instrument = instrument;
+  }
+
+  play(action: string) {
+    return `${this.name} ${action} ${this.instrument}`;
+  }
+}
+
+const musician1 = new Guitarist("Jimmy Page", "Guitar");
+console.log(musician1.play("strums"));
+```
+
+- **Static method**:
+
+  - A static method in JavaScript is a method that has a static keyword prepended to itself. Such methods cannot be accessed through instantiated objects but could be accessed through the class name. This is because static methods belong to the class directly. Inheritance even applies to static methods.
+
+```typescript
+class Peeps {
+  static count: number = 0;
+
+  static getCount(): number {
+    return Peeps.count;
+  }
+
+  public id: string;
+
+  constructor(public name: string) {
+    this.name = name;
+    this.id = `Peep: ${++Peeps.count}`;
+  }
+}
+
+const John = new Peeps("John");
+const Steve = new Peeps("Steve");
+const Jane = new Peeps("Jane");
+const Amy = new Peeps("Amy");
+
+console.log(Peeps.count);
+console.log(John);
+console.log(Steve);
+console.log(Jane);
+console.log(Amy);
+```
+
+# JavaScript Accessors (Getters and Setters):
+
+- Getters and setters allow you to define Object Accessors (Computed Properties).
+
+- ### JavaScript Getter (The get Keyword):
+
+  - This example uses a lang property to get the value of the language property.
+
+  ```javascript
+  const person = {
+    firstName: "John",
+    lastName: "Doe",
+    language: "en",
+    get lang() {
+      return this.language;
+    },
+  };
+
+  console.log(person.lang);
+  ```
+
+- ### JavaScript Setter (The set Keyword):
+
+  - This example uses a lang property to set the value of the language property.
+
+  ```javascript
+  const person = {
+    firstName: "John",
+    lastName: "Doe",
+    language: "",
+    set lang(lang) {
+      this.language = lang;
+    },
+  };
+
+  // Set an object property using a setter:
+  person.lang = "en";
+  console.log(person.language);
+  ```
+
+# TypeScript Accessors (Getters and Setters):
+
+```typescript
+class Bands {
+  private dataState: string[];
+
+  constructor() {
+    this.dataState = [];
+  }
+
+  public get data(): string[] {
+    return this.dataState;
+  }
+
+  public set data(value: string[]) {
+    if (Array.isArray(value) && value.every((el) => typeof el === "string")) {
+      this.dataState = value;
+      return;
+    } else throw new Error("Param is not an array of strings");
+  }
+}
+
+const MyBands = new Bands();
+MyBands.data = ["Led Zepp", "Greenday", "Coldplay"];
+
+MyBands.data = [...MyBands.data, "Linked Horizon"];
+
+console.log(MyBands.data);
+```
+
+# Index Signatures in TypeScript :
+
+- Index signature is used to represent the type of object/dictionary when the values of the object are of consistent types.
+
+- **Syntax**: { [key: KeyType] : ValueType }
+
+```
+let colorsTheme = {
+  palette: {
+    success: {
+      main: "green",
+    },
+    error: {
+      main: "red",
+    },
+    warning: {
+      main: "orange",
+    },
+  },
+}
+
+```
+
+- Let’s see how we can add type definition for the above object:
+
+```typescript
+interface ColorsTheme {
+  [key: string]: {
+    [key: string]: {
+      [key: string]: string;
+    };
+  };
+}
+```
+
+- What if we try to add a value of a different type other than the type defined in the index signature? If we try to add a value of type number then typescript starts shouting.
+
+- _Note: However, properties of different types are acceptable if the index signature is a union of the property types_
+
+```typescript
+interface TransactionObj {
+  readonly [index: string]: number;
+}
+
+// Will only be readonly and no changes can be made after initialising
+// interface TransactionObj {
+//   readonly [index: string]: number;
+// }
+
+const transactionObj1: TransactionObj = {
+  Pizza: 5,
+  Books: 10,
+  Job: 100,
+};
+
+console.log(transactionObj1.Pizza);
+console.log(transactionObj1.Books);
+console.log(transactionObj1.Job);
+
+console.log("********* Dynamic Props *********");
+
+const prop: string = "Pizza";
+
+console.log(transactionObj1[prop]);
+
+function totalNet(transactions: TransactionObj): number {
+  let total = 0;
+
+  for (const transaction in transactions) {
+    total += transactions[transaction];
+  }
+
+  return total;
+}
+
+console.log(totalNet(transactionObj1));
+```
+
+- Indexing can also be made **readonly**.
+
+```typescript
+// Will only be readonly and no changes can be made after initialising
+interface TransactionObj {
+  readonly [index: string]: number;
+}
+```
+
+- While indexing provide a nice way of handling the objects, it does comes with some drawbacks. Like when accessing a key which is not present in the object it returns undefined
+
+```typescript
+console.log(transactionObj1["prop"]); //undefined
+```
+
+- **_Union in Indexing_**:
+
+  - **keyof with explicit keys**:
+
+    - **keyof** is a keyword in TypeScript which is used to extract the key type from an object type.
+
+    ```typescript
+    interface Person {
+      name: string;
+      age: number;
+    }
+    // `keyof Person` here creates a union type of "name" and "age", other strings will not be allowed
+    function printPersonProperty(person: Person, property: keyof Person) {
+      console.log(
+        `Printing person property ${property}: "${person[property]}"`
+      );
+    }
+    let person = {
+      name: "Max",
+      age: 27,
+    };
+    printPersonProperty(person, "name"); // Printing person property name: "Max"
+    ```
+
+  ```typescript
+  interface Student {
+    // [index: string]: string | number | number[] | undefined;
+    name: string;
+    GPA: number;
+    classes: [100, 200];
+  }
+
+  const student: Student = {
+    name: "Doug",
+    GPA: 3.5,
+    classes: [100, 200],
+  };
+
+  for (const key in student) {
+    console.log(`${key}: ${student[key as keyof Student]}`);
+  }
+
+  // Other way of accesing the values
+
+  Object.keys(student).map((key) => {
+    console.log(student[key as keyof typeof student]);
+  });
+
+  // Using function
+
+  const logStudentkey = (student: Student, key: keyof Student): void => {
+    console.log(`Student ${key}: ${student[key]}`);
+  };
+
+  logStudentkey(student, "name");
+
+  // ******************************************************************************** //
+
+  // interface Incomes {
+  //   [key: string]: number;
+  // }
+
+  // The above interface can be written in type as follows
+
+  type Streams = "salary" | "bonus" | "freelancing";
+
+  type Incomes = Record<Streams, number>;
+
+  const monthlyIncomes: Incomes = {
+    salary: 150000,
+    bonus: 40000,
+    freelancing: 100000,
+  };
+
+  for (const revenue in monthlyIncomes) {
+    console.log(monthlyIncomes[revenue as keyof typeof monthlyIncomes]);
+  }
+
+  console.log("*********** keyof only *************");
+
+  for (const revenue in monthlyIncomes) {
+    console.log(monthlyIncomes[revenue as keyof Incomes]);
+  }
+  ```
