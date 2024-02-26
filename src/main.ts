@@ -196,15 +196,15 @@ const transactionObj1: TransactionObj = {
   Job: 100,
 };
 
-console.log(transactionObj1.Pizza);
-console.log(transactionObj1.Books);
-console.log(transactionObj1.Job);
+// console.log(transactionObj1.Pizza);
+// console.log(transactionObj1.Books);
+// console.log(transactionObj1.Job);
 
 console.log("********* Dynamic Props *********");
 
 const prop: string = "Pizza";
 
-console.log(transactionObj1[prop]);
+// console.log(transactionObj1[prop]);
 
 function totalNet(transactions: TransactionObj): number {
   let total = 0;
@@ -216,7 +216,7 @@ function totalNet(transactions: TransactionObj): number {
   return total;
 }
 
-console.log(totalNet(transactionObj1));
+// console.log(totalNet(transactionObj1));
 
 // Union in indexing
 
@@ -234,18 +234,18 @@ const student: Student = {
 };
 
 for (const key in student) {
-  console.log(`${key}: ${student[key as keyof Student]}`);
+  // console.log(`${key}: ${student[key as keyof Student]}`);
 }
 
 Object.keys(student).map((key) => {
-  console.log(student[key as keyof typeof student]);
+  // console.log(student[key as keyof typeof student]);
 });
 
 const logStudentkey = (student: Student, key: keyof Student): void => {
-  console.log(`Student ${key}: ${student[key]}`);
+  // console.log(`Student ${key}: ${student[key]}`);
 };
 
-logStudentkey(student, "name");
+// logStudentkey(student, "name");
 
 // interface Incomes {
 //   [key: string]: number;
@@ -264,11 +264,188 @@ const monthlyIncomes: Incomes = {
 };
 
 for (const revenue in monthlyIncomes) {
-  console.log(monthlyIncomes[revenue as keyof typeof monthlyIncomes]);
+  // console.log(monthlyIncomes[revenue as keyof typeof monthlyIncomes]);
 }
 
-console.log("*********** keyof only *************");
+// console.log("*********** keyof only *************");
 
 for (const revenue in monthlyIncomes) {
-  console.log(monthlyIncomes[revenue as keyof Incomes]);
+  // console.log(monthlyIncomes[revenue as keyof Incomes]);
 }
+
+// ************************************************************************************** //
+
+////////////////////// GENERICS ///////////////////////////////////////////////////////////
+
+// A fucntion only for type string.
+// const stringEcho = (arg: string): string => {
+//   return arg;
+// };
+
+// How to make a generic function which can echo(prints) any type?
+// To achieve that Generics are used which are used as placeholder for the types.
+// A type parameter or variable is provided to achiece that. the syntax is:
+// Syntax: <T> **Note**: Anything can replaced with "T"
+
+// A Generic function
+
+const echo = <T>(arg: T): T => arg;
+
+const isObj = <T>(arg: T): boolean => {
+  return typeof arg === "object" && !Array.isArray(arg) && arg !== null;
+};
+
+// console.log(echo("John Doe"));
+// console.log(echo(42));
+// console.log(echo(false));
+// console.log(echo(["John Doe", { name: "array" }]));
+
+// console.log(isObj("John Doe"));
+// console.log(isObj(42));
+// console.log(isObj(false));
+// console.log(isObj(["John Doe", { name: "array" }]));
+// console.log(isObj({ name: "array" }));
+// console.log(isObj(null));
+
+// The below function returns an object
+const isTrue = <T>(arg: T): { arg: T; is: boolean } => {
+  if (Array.isArray(arg) && !arg.length) {
+    return { arg, is: false };
+  }
+
+  if (isObj(arg) && Object.keys(arg as keyof T).length) {
+    return {
+      arg,
+      is: false,
+    };
+  }
+
+  return {
+    arg,
+    is: !!arg,
+  };
+};
+
+// console.log(isTrue("John Doe"));
+// console.log(isTrue(42));
+// console.log(isTrue(false));
+// console.log(isTrue(["John Doe", { name: "array" }]));
+// console.log(isTrue({ name: "array" }));
+// console.log(isTrue(null));
+// console.log(isTrue(false));
+// console.log(isTrue(0));
+// console.log(isTrue(1));
+// console.log(isTrue(true));
+// console.log(isTrue(NaN));
+
+interface BoolCheck<T> {
+  value: T;
+  is: boolean;
+}
+
+const checkBool = <T>(arg: T): BoolCheck<T> => {
+  if (Array.isArray(arg) && !arg.length) {
+    return { value: arg, is: false };
+  }
+
+  if (isObj(arg) && Object.keys(arg as keyof T).length) {
+    return {
+      value: arg,
+      is: false,
+    };
+  }
+
+  return {
+    value: arg,
+    is: !!arg,
+  };
+};
+
+// console.log(checkBool("John Doe"));
+// console.log(checkBool(42));
+// console.log(checkBool(false));
+// console.log(checkBool(["John Doe", { name: "array" }]));
+// console.log(checkBool({ name: "array" }));
+// console.log(checkBool(null));
+// console.log(checkBool(false));
+// console.log(checkBool(0));
+// console.log(checkBool(1));
+// console.log(checkBool(true));
+// console.log(checkBool(NaN));
+
+interface HasID {
+  id: number;
+}
+const processUser = <T extends HasID>(user: T): T => {
+  return user;
+};
+
+// console.log(
+//   processUser({
+//     id: 1,
+//     name: "John Doe",
+//   })
+// );
+// console.log(
+//   processUser({
+//     name: "John Doe",
+//   })
+// );
+
+const getUsersProperty = <T extends HasID, K extends keyof T>(
+  users: T[],
+  key: K
+): T[K][] => {
+  return users.map((user) => user[key]);
+};
+
+const usersArray = [
+  {
+    id: 1,
+    name: "Leanne Graham",
+    username: "Bret",
+    email: "Sincere@april.biz",
+    address: {
+      street: "Kulas Light",
+      suite: "Apt. 556",
+      city: "Gwenborough",
+      zipcode: "92998-3874",
+      geo: {
+        lat: "-37.3159",
+        lng: "81.1496",
+      },
+    },
+    phone: "1-770-736-8031 x56442",
+    website: "hildegard.org",
+    company: {
+      name: "Romaguera-Crona",
+      catchPhrase: "Multi-layered client-server neural-net",
+      bs: "harness real-time e-markets",
+    },
+  },
+  {
+    id: 2,
+    name: "Ervin Howell",
+    username: "Antonette",
+    email: "Shanna@melissa.tv",
+    address: {
+      street: "Victor Plains",
+      suite: "Suite 879",
+      city: "Wisokyburgh",
+      zipcode: "90566-7771",
+      geo: {
+        lat: "-43.9509",
+        lng: "-34.4618",
+      },
+    },
+    phone: "010-692-6593 x09125",
+    website: "anastasia.net",
+    company: {
+      name: "Deckow-Crist",
+      catchPhrase: "Proactive didactic contingency",
+      bs: "synergize scalable supply-chains",
+    },
+  },
+];
+
+console.log(getUsersProperty(usersArray, "address"));

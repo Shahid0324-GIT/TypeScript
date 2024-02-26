@@ -740,3 +740,246 @@ console.log(transactionObj1["prop"]); //undefined
     console.log(monthlyIncomes[revenue as keyof Incomes]);
   }
   ```
+
+# TypeScript Basic Generics:
+
+- Generics allow creating **'type variables'** which can be used to create classes, functions & type aliases that don't need to explicitly define the types that they use.
+
+- Generics makes it easier to write reusable code.
+
+- Generics are a placeholder for the types.
+
+- ## Extends
+
+  - Constraints can be added to generics to limit what's allowed. The constraints make it possible to rely on a more specific type when using the generic type.
+
+  ```typescript
+  function createLoggedPair<
+    S extends string | number,
+    T extends string | number
+  >(v1: S, v2: T): [S, T] {
+    console.log(`creating pair: v1='${v1}', v2='${v2}'`);
+    return [v1, v2];
+  }
+  ```
+
+- ###### What is the Double bang (!!) operator in JavaScript?:
+
+  - Every value has truth or false values in JavaScript. For example, a `null` value has an associated boolean value of false. Similarly `34` has an associated value of true. We can use this to cast a variable to true or false using the double bang operator.
+
+  - The `!` in JavaScript, also called “bang”, is the logical “not” operator. If you place this operator in front of a boolean value, it will reverse the value, returning the opposite.
+
+  ```sh
+  !true; // returns false
+  !false; // returns true
+
+  isTrue = true; // variable which is boolean
+  !isTrue; // returns false
+
+  !!true // returns true
+  !!false // returns false
+
+  isTrue = true // variable which is boolean
+  !!isTrue // returns true
+  ```
+
+  - ### Truthy values:
+
+    - In JavaScript, a truthy value is a value that is considered true when encountered in a Boolean context.
+
+      - The following values are few examples that are considered by JavaScript to be truthys:
+        ```
+          Object: {}
+          Array: []
+          Not empty string: "anything"
+          Number other than zero: 3.14
+          Date: new Date();
+        ```
+
+  - ### Falsy values:
+
+    - A falsy value is a value that is considered false when encountered in a Boolean context.
+
+      - The following values are few of the examples that are considered by JavaScript to be falsey:
+        ```
+          Empty string: ""
+          0
+          null
+          undefined
+          NaN and the list of falsy values below.
+        ```
+
+```typescript
+// A fucntion only for type string.
+// const stringEcho = (arg: string): string => {
+//   return arg;
+// };
+
+// How to make a generic function which can echo(prints) any type?
+// To achieve that Generics are used which are used as placeholder for the types.
+// A type parameter or variable is provided to achiece that. the syntax is:
+// Syntax: <T> **Note**: Anything can replaced with "T"
+
+// A Generic function
+
+const echo = <T>(arg: T): T => arg;
+
+const isObj = <T>(arg: T): boolean => {
+  return typeof arg === "object" && !Array.isArray(arg) && arg !== null;
+};
+
+// console.log(echo("John Doe"));
+// console.log(echo(42));
+// console.log(echo(false));
+// console.log(echo(["John Doe", { name: "array" }]));
+
+// console.log(isObj("John Doe"));
+// console.log(isObj(42));
+// console.log(isObj(false));
+// console.log(isObj(["John Doe", { name: "array" }]));
+// console.log(isObj({ name: "array" }));
+// console.log(isObj(null));
+
+// The below function returns an object
+const isTrue = <T>(arg: T): { arg: T; is: boolean } => {
+  if (Array.isArray(arg) && !arg.length) {
+    return { arg, is: false };
+  }
+
+  if (isObj(arg) && Object.keys(arg as keyof T).length) {
+    return {
+      arg,
+      is: false,
+    };
+  }
+
+  return {
+    arg,
+    is: !!arg,
+  };
+};
+
+// console.log(isTrue("John Doe"));
+// console.log(isTrue(42));
+// console.log(isTrue(false));
+// console.log(isTrue(["John Doe", { name: "array" }]));
+// console.log(isTrue({ name: "array" }));
+// console.log(isTrue(null));
+// console.log(isTrue(false));
+// console.log(isTrue(0));
+// console.log(isTrue(1));
+// console.log(isTrue(true));
+// console.log(isTrue(NaN));
+
+interface BoolCheck<T> {
+  value: T;
+  is: boolean;
+}
+
+const checkBool = <T>(arg: T): BoolCheck<T> => {
+  if (Array.isArray(arg) && !arg.length) {
+    return { value: arg, is: false };
+  }
+
+  if (isObj(arg) && Object.keys(arg as keyof T).length) {
+    return {
+      value: arg,
+      is: false,
+    };
+  }
+
+  return {
+    value: arg,
+    is: !!arg,
+  };
+};
+
+// console.log(checkBool("John Doe"));
+// console.log(checkBool(42));
+// console.log(checkBool(false));
+// console.log(checkBool(["John Doe", { name: "array" }]));
+// console.log(checkBool({ name: "array" }));
+// console.log(checkBool(null));
+// console.log(checkBool(false));
+// console.log(checkBool(0));
+// console.log(checkBool(1));
+// console.log(checkBool(true));
+// console.log(checkBool(NaN));
+
+interface HasID {
+  id: number;
+}
+const processUser = <T extends HasID>(user: T): T => {
+  return user;
+};
+
+// console.log(
+//   processUser({
+//     id: 1,
+//     name: "John Doe",
+//   })
+// );
+// console.log(
+//   processUser({
+//     name: "John Doe",
+//   })
+// );
+
+const getUsersProperty = <T extends HasID, K extends keyof T>(
+  users: T[],
+  key: K
+): T[K][] => {
+  return users.map((user) => user[key]);
+};
+
+const usersArray = [
+  {
+    id: 1,
+    name: "Leanne Graham",
+    username: "Bret",
+    email: "Sincere@april.biz",
+    address: {
+      street: "Kulas Light",
+      suite: "Apt. 556",
+      city: "Gwenborough",
+      zipcode: "92998-3874",
+      geo: {
+        lat: "-37.3159",
+        lng: "81.1496",
+      },
+    },
+    phone: "1-770-736-8031 x56442",
+    website: "hildegard.org",
+    company: {
+      name: "Romaguera-Crona",
+      catchPhrase: "Multi-layered client-server neural-net",
+      bs: "harness real-time e-markets",
+    },
+  },
+  {
+    id: 2,
+    name: "Ervin Howell",
+    username: "Antonette",
+    email: "Shanna@melissa.tv",
+    address: {
+      street: "Victor Plains",
+      suite: "Suite 879",
+      city: "Wisokyburgh",
+      zipcode: "90566-7771",
+      geo: {
+        lat: "-43.9509",
+        lng: "-34.4618",
+      },
+    },
+    phone: "010-692-6593 x09125",
+    website: "anastasia.net",
+    company: {
+      name: "Deckow-Crist",
+      catchPhrase: "Proactive didactic contingency",
+      bs: "synergize scalable supply-chains",
+    },
+  },
+];
+
+console.log(getUsersProperty(usersArray, "address"));
+```
